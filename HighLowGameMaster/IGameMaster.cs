@@ -8,6 +8,7 @@ namespace HighLowGameMaster
         int MinimumValue { get; }
         int MisteryNumber { get; }
 
+        void StartNewRound();
         Result<ResponseToGuess> ValidateGuess(int guess);
     }
 }

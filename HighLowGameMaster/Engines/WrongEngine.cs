@@ -1,15 +1,19 @@
 ﻿using FluentResults;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HighLowGameMaster.Engines
 {
-    public class DefaultEngine : IEngine
+    internal class WrongEngine
     {
+        public GameState GameState;
         private int _minValue;
         private int _maxValue;
 
-        public GameState GameState { get; private set; }
-
-        public DefaultEngine(int minimumValue, int maximumValue)
+        public WrongEngine(int minimumValue, int maximumValue)
         {
             if (minimumValue > maximumValue)
                 throw new ArgumentOutOfRangeException($"The {nameof(maximumValue)} must be less than or equal to the {nameof(minimumValue)}.");
@@ -30,10 +34,10 @@ namespace HighLowGameMaster.Engines
             if (guess > GameState.MaximumValue) return Result.Fail($"Guess {guess} is above maximum: {GameState.MaximumValue}");
 
             if (guess < GameState.MisteryNumber)
-                return ResponseToGuess.High;
+                return ResponseToGuess.Low;
 
             if (guess > GameState.MisteryNumber)
-                return ResponseToGuess.Low;
+                return ResponseToGuess.High;
 
             if (guess == GameState.MisteryNumber)
                 return ResponseToGuess.Correct;

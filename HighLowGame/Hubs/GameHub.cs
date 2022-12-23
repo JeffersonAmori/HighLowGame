@@ -25,6 +25,13 @@ namespace HighLowGame.Hubs
             await WriteToPage($"{user} guesses {guess}.");
             var responseToGuess = _gameMaster.ValidateGuess(guessedNumber);
             await WriteToPage(MessageFrom(responseToGuess));
+
+            if (responseToGuess.Value == ResponseToGuess.Correct)
+            {
+                await WriteToPage("Starting new round!");
+                _gameMaster.StartNewRound();
+                await WriteToPage("New mistery number picked!");
+            }
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)
