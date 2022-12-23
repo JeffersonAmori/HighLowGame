@@ -4,9 +4,10 @@ namespace HighLowGame.Hubs
 {
     public class GameHub : Hub
     {
-        public async Task SendMessage(string user, string message)
+        public async Task Guess(string user, string number)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            string message = $"{user} guesses {number}";
+            await Clients.All.SendAsync("WriteToPage", message);
         }
     }
 }
