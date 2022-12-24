@@ -28,6 +28,7 @@ namespace HighLowGame.Hubs
 
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
+                await Celebrate(user);
                 await WriteToPage("Starting new round!");
                 _gameMaster.StartNewRound();
                 await WriteToPage("New mistery number picked!");
@@ -48,6 +49,11 @@ namespace HighLowGame.Hubs
         private async Task WriteToPage(string errorMessage)
         {
             await Clients.All.SendAsync("WriteToPage", errorMessage);
+        }
+
+        private async Task Celebrate(string user)
+        {
+            await Clients.All.SendAsync("Celebrate", user);
         }
     }
 }

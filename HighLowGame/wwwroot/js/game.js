@@ -14,8 +14,19 @@ connection.on("WriteToPage", function (message) {
     li.textContent = message;
 });
 
+connection.on("Celebrate", function (user) {
+
+    if (user != document.getElementById("userInput").value)
+        return;
+
+    party.confetti(document.getElementsByTagName("Body")[0], {
+        count: party.variation.range(20, 40),
+    });
+});
+
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
+
 }).catch(function (err) {
     return console.error(err.toString());
 });
