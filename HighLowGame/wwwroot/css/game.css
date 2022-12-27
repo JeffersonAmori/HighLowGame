@@ -1,0 +1,16 @@
+﻿.userMessage {
+    text-align: left;
+    color: yellowgreen;
+    margin-bottom: 0;
+}
+
+.gameMessage {
+    text-align: right;
+    color: lightcoral;
+    margin-bottom: 0;
+}
+
+#messagesList {
+    overflow-y: scroll;
+    max-height: 400px;
+}

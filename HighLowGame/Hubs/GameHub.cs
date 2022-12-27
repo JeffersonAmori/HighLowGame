@@ -8,7 +8,13 @@ namespace HighLowGame.Hubs
     public class GameHub : Hub
     {
         private static IGameMaster _gameMaster;
+        private static string _noUser;
         private GameMasterFactory _gameMasterFactory;
+
+        static GameHub()
+        {
+            _noUser = Guid.NewGuid().ToString();
+        }
 
         public GameHub(GameMasterFactory gameMasterFactory)
         {
@@ -22,13 +28,13 @@ namespace HighLowGame.Hubs
             if (!int.TryParse(guess, out int guessedNumber))
             {
                 var errorMessage = $"Your guess {guess} should be a number (ex: 10).";
-                await WriteToPage(errorMessage);
+                await WriteToPage(user, errorMessage);
                 return;
             }
 
-            await WriteToPage($"{user} guesses {guess}.");
+            await WriteToPage(user, $"{user} guesses {guess}.");
             var responseToGuess = _gameMaster.ValidateGuess(guessedNumber);
-            await WriteToPage(MessageFrom(responseToGuess));
+            await WriteToPage(_noUser, MessageFrom(responseToGuess));
 
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
@@ -45,20 +51,25 @@ namespace HighLowGame.Hubs
             var newSelectedEngine = newEngine.ToEnum<GameMasterEngines>();
             _gameMaster = _gameMasterFactory.CreateGameMaster(newSelectedEngine);
 
-            await WriteToPage($"The new engine {newEngine} has been selected by {user}.");
+            await WriteToPage(user, $"The new engine {newEngine} has been selected by {user}.");
             await UpdateEngine(newEngine);
             await StartNewRound();
         }
 
         private async Task StartNewRound()
         {
-            await WriteToPage("Starting new round!");
+            await WriteToPage(_noUser, "Starting new round!");
             _gameMaster.StartNewRound();
-            await WriteToPage("New mistery number picked!");
+            await WriteToPage(_noUser, "New mistery number picked!");
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)
         {
+            if (responseToGuess.IsFailed)
+            {
+                return string.Join(", ", responseToGuess.Errors.Select(x => x.Message));
+            }
+
             return responseToGuess.Value switch
             {
                 ResponseToGuess.High => "HI: the mystery number is bigger than your guess!",
@@ -68,9 +79,9 @@ namespace HighLowGame.Hubs
             };
         }
 
-        private async Task WriteToPage(string errorMessage)
+        private async Task WriteToPage(string user, string message)
         {
-            await Clients.All.SendAsync("WriteToPage", errorMessage);
+            await Clients.All.SendAsync("WriteToPage", user, message);
         }
 
         private async Task Celebrate(string user)

@@ -5,13 +5,26 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
 
-connection.on("WriteToPage", function (message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
+connection.on("WriteToPage", function (user, message) {
+    var currentUser = document.getElementById("userInput").value;
+
+    var p = document.createElement("p");
+
+    if (user === currentUser) {
+        p.className = "userMessage";
+    }
+    else {
+        p.className = "gameMessage";
+    }
+
+    var messageList = document.getElementById("messagesList");
+    messageList.appendChild(p);
     // We can assign user-supplied strings to an element's textContent because it
     // is not interpreted as markup. If you're assigning in any other way, you 
     // should be aware of possible script injection concerns.
-    li.textContent = message;
+    p.textContent = message;
+
+    messageList.scrollTop = messageList.scrollHeight;
 });
 
 connection.on("Celebrate", function (user) {

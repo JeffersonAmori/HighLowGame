@@ -1,6 +1,26 @@
 ﻿@page
 @using HighLowGameMaster;
+
+<link href="~/css/game.css" rel="stylesheet" />
+
 <div class="container">
+    <div>
+        <h3>Welcome to the Hi-Lo game</h3>
+        <p>
+            Each player connected to this URL can guess the Mistery Number.
+            The game will let you know if you guess is higher, lower or the exact the Mistery Number.
+            You can change Game Engines at any moment (changing the Engine finishes the current round and starts a new one).
+        </p>
+        <p>
+            Available Engines:
+            <ul>
+                <li><b>Default</b>: The default Engine, behaviors as expected.</li>
+                <li><b>Wrong</b>: Always invert the Hi and Lo messages.</li>
+                <li><b>Random</b>: Randomly says Hi or Lo until someone gets the Mistery Number right.</li>
+            </ul>
+        </p>
+    </div>
+    <hr />
     <div class="row p-1">
         <div class="col-1">Engine</div>
         <div class="col-5">
@@ -27,9 +47,7 @@
         </div>
     </div>
     <div class="row p-1">
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
+        <div id="messagesList" class="col-6" />
     </div>
 </div>
 <script src="~/js/name.js"></script>
