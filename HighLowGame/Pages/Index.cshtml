@@ -1,29 +1,39 @@
 ﻿@page
-    <div class="container">
-        <div class="row p-1">
-            <div class="col-1">User</div>
-            <div class="col-5"><input type="text" id="userInput" /></div>
-        </div>
-        <div class="row p-1">
-            <div class="col-1">Guess</div>
-            <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
-        </div>
-        <div class="row p-1">
-            <div class="col-6 text-end">
-                <input type="button" id="sendButton" value="Send Message" />
-            </div>
-        </div>
-        <div class="row p-1">
-            <div class="col-6"> 
-                <hr />
-            </div>
-        </div>
-        <div class="row p-1">
-            <div class="col-6">
-                <ul id="messagesList"></ul>
-            </div>
+@using HighLowGameMaster;
+<div class="container">
+    <div class="row p-1">
+        <div class="col-1">Engine</div>
+        <div class="col-5">
+            <select id="enginesList" onchange="onEnginesListChange()" asp-items="Html.GetEnumSelectList<GameMasterEngines>()">
+            </select>
         </div>
     </div>
+    <div class="row p-1">
+        <div class="col-1">User</div>
+        <div class="col-5"><input type="text" id="userInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-1">Guess</div>
+        <div class="col-5"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6 text-end">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <hr />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+<script src="~/js/name.js"></script>
+<script src="~/js/index.js"></script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
 <script src="~/js/game.js"></script>

@@ -2,13 +2,16 @@
 
 namespace HighLowGameMaster.Engines
 {
-    internal class Random
+    internal class RandomEngine : IEngine
     {
-        public GameState GameState;
         private int _minValue;
         private int _maxValue;
 
-        public Random(int minimumValue, int maximumValue)
+        public GameState GameState;
+
+        GameState IEngine.GameState => GameState;
+
+        public RandomEngine(int minimumValue, int maximumValue)
         {
             if (minimumValue > maximumValue)
                 throw new ArgumentOutOfRangeException($"The {nameof(maximumValue)} must be less than or equal to the {nameof(minimumValue)}.");

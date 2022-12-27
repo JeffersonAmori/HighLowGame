@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HighLowGameMaster.Extensions.AspNetCore\HighLowGameMaster.Extensions.AspNetCore.csproj" />
     <ProjectReference Include="..\HighLowGameMaster\HighLowGameMaster.csproj" />
   </ItemGroup>
 

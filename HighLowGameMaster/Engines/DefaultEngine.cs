@@ -16,6 +16,8 @@ namespace HighLowGameMaster.Engines
 
             _minValue = minimumValue;
             _maxValue = maximumValue;
+
+            StartNewRound();
         }
 
         public void StartNewRound()

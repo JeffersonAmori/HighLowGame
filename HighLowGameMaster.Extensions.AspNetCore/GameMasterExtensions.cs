@@ -1,10 +1,17 @@
-﻿namespace HighLowGameMaster.Extensions.AspNetCore
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace HighLowGameMaster.Extensions.AspNetCore
 {
     public static class GameMasterExtensions
     {
-        public static IServiceProvider AddGameMaster(this IServiceProvider serviceProvider)
+        public static IServiceCollection AddGameMaster(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            return serviceProvider;
+            // TODO: Make this work.
+            //serviceCollection.AddTransient<GameMasterFactory>();
+            //serviceCollection.Configure<GameMasterSettings>(configuration.GetSection(nameof(GameMasterSettings.GameMaster)));
+
+            return serviceCollection;
         }
     }
 }

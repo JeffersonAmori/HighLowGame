@@ -16,12 +16,15 @@ connection.on("WriteToPage", function (message) {
 
 connection.on("Celebrate", function (user) {
 
-    if (user != document.getElementById("userInput").value)
+    const currentUser = document.getElementById("userInput").value;
+    if (user != currentUser)
         return;
 
-    party.confetti(document.getElementsByTagName("Body")[0], {
-        count: party.variation.range(20, 40),
-    });
+    celebrate();
+});
+
+connection.on("UpdateEngine", function (newEngine) {
+    document.getElementById("enginesList").value = newEngine;
 });
 
 connection.start().then(function () {
@@ -39,3 +42,17 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     });
     event.preventDefault();
 });
+
+function onEnginesListChange() {
+    var selectedEngine = document.getElementById("enginesList").value;
+    var user = document.getElementById("userInput").value;
+    connection.invoke("EngineChanged", user, selectedEngine).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+function celebrate() {
+    party.confetti(document.getElementsByTagName("Body")[0], {
+        count: party.variation.range(20, 40),
+    });
+}

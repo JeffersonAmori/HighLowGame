@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using HighLowGameMaster.Engines;
 
 namespace HighLowGameMaster
 {
@@ -8,6 +9,7 @@ namespace HighLowGameMaster
         int MinimumValue { get; }
         int MisteryNumber { get; }
 
+        void SetEngine(IEngine engine);
         void StartNewRound();
         Result<ResponseToGuess> ValidateGuess(int guess);
     }

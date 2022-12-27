@@ -1,16 +1,20 @@
 ﻿using FluentResults;
 using HighLowGameMaster;
 using Microsoft.AspNetCore.SignalR;
+using HighLowGame.Extensions;
 
 namespace HighLowGame.Hubs
 {
     public class GameHub : Hub
     {
-        private readonly IGameMaster _gameMaster;
+        private static IGameMaster _gameMaster;
+        private GameMasterFactory _gameMasterFactory;
 
-        public GameHub(IGameMaster gameMaster)
+        public GameHub(GameMasterFactory gameMasterFactory)
         {
-            _gameMaster = gameMaster;
+            _gameMasterFactory = gameMasterFactory;
+            if (_gameMaster is null)
+                _gameMaster = _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default);
         }
 
         public async Task Guess(string user, string guess)
@@ -29,10 +33,28 @@ namespace HighLowGame.Hubs
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
                 await Celebrate(user);
-                await WriteToPage("Starting new round!");
-                _gameMaster.StartNewRound();
-                await WriteToPage("New mistery number picked!");
+                await StartNewRound();
             }
+        }
+
+        public async Task EngineChanged(string user, string newEngine)
+        {
+            if (string.IsNullOrEmpty(user))
+                user = "an anonymous person";
+
+            var newSelectedEngine = newEngine.ToEnum<GameMasterEngines>();
+            _gameMaster = _gameMasterFactory.CreateGameMaster(newSelectedEngine);
+
+            await WriteToPage($"The new engine {newEngine} has been selected by {user}.");
+            await UpdateEngine(newEngine);
+            await StartNewRound();
+        }
+
+        private async Task StartNewRound()
+        {
+            await WriteToPage("Starting new round!");
+            _gameMaster.StartNewRound();
+            await WriteToPage("New mistery number picked!");
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)
@@ -54,6 +76,11 @@ namespace HighLowGame.Hubs
         private async Task Celebrate(string user)
         {
             await Clients.All.SendAsync("Celebrate", user);
+        }
+
+        private async Task UpdateEngine(string newEngine)
+        {
+            await Clients.All.SendAsync("UpdateEngine", newEngine);
         }
     }
 }

@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="FluentResults" Version="3.15.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

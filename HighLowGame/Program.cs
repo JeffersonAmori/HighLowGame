@@ -1,19 +1,16 @@
 using HighLowGame.Hubs;
 using HighLowGameMaster;
+using HighLowGameMaster.Extensions.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<IGameMaster>(x =>
-{
-    var config = x.GetRequiredService<IConfiguration>();
-    var minValue = config.GetValue<int>("GameMaster:MinimumValue");
-    var maxValue = config.GetValue<int>("GameMaster:MaximumValue");
-
-    return new GameMaster(minValue, maxValue);
-});
+builder.Services.AddGameMaster(builder.Configuration);
+builder.Services.AddTransient<GameMasterFactory>();
+builder.Services.Configure<GameMasterSettings>(
+    builder.Configuration.GetSection(nameof(GameMasterSettings.GameMaster)));
 
 var app = builder.Build();
 
