@@ -1,6 +1,8 @@
 using HighLowGame.Hubs;
 using HighLowGameMaster;
 using HighLowGameMaster.Extensions.AspNetCore;
+using RandomnessService;
+using RandomnessService.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddGameMaster(builder.Configuration);
 builder.Services.AddTransient<GameMasterFactory>();
 builder.Services.Configure<GameMasterSettings>(
     builder.Configuration.GetSection(nameof(GameMasterSettings.GameMaster)));
+builder.Services.AddSingleton<IRandomnessService>(
+    new NeverRepeatRandomnessService(new PeanutButterProvider()));
 
 var app = builder.Build();
 

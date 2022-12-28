@@ -28,7 +28,6 @@ connection.on("WriteToPage", function (user, message) {
 });
 
 connection.on("Celebrate", function (user) {
-
     const currentUser = document.getElementById("userInput").value;
     if (user != currentUser)
         return;
@@ -66,6 +65,8 @@ function onEnginesListChange() {
 
 function celebrate() {
     party.confetti(document.getElementsByTagName("Body")[0], {
-        count: party.variation.range(20, 40),
+        count: party.variation.range(50, 60),
+        spread: party.variation.range(45, 55),
+        size: party.variation.range(1.3, 1.45)
     });
 }

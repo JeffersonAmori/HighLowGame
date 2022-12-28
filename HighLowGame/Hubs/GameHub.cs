@@ -1,26 +1,28 @@
 ﻿using FluentResults;
+using HighLowGame.Extensions;
 using HighLowGameMaster;
 using Microsoft.AspNetCore.SignalR;
-using HighLowGame.Extensions;
+using RandomnessService;
 
 namespace HighLowGame.Hubs
 {
-    public class GameHub : Hub
+    public sealed class GameHub : Hub
     {
-        private static IGameMaster _gameMaster;
-        private static string _noUser;
-        private GameMasterFactory _gameMasterFactory;
+        private static IGameMaster? _gameMaster;
+        private static readonly string _noUser;
+        private readonly GameMasterFactory _gameMasterFactory;
+        private readonly IRandomnessService _randomnessService;
 
         static GameHub()
         {
             _noUser = Guid.NewGuid().ToString();
         }
 
-        public GameHub(GameMasterFactory gameMasterFactory)
+        public GameHub(GameMasterFactory gameMasterFactory, IRandomnessService randomnessService)
         {
             _gameMasterFactory = gameMasterFactory;
-            if (_gameMaster is null)
-                _gameMaster = _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default);
+            _randomnessService = randomnessService;
+            _gameMaster ??= _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, randomnessService);
         }
 
         public async Task Guess(string user, string guess)
@@ -49,7 +51,7 @@ namespace HighLowGame.Hubs
                 user = "an anonymous person";
 
             var newSelectedEngine = newEngine.ToEnum<GameMasterEngines>();
-            _gameMaster = _gameMasterFactory.CreateGameMaster(newSelectedEngine);
+            _gameMaster = _gameMasterFactory.CreateGameMaster(newSelectedEngine, _randomnessService);
 
             await WriteToPage(user, $"The new engine {newEngine} has been selected by {user}.");
             await UpdateEngine(newEngine);

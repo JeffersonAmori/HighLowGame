@@ -13,9 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F6069BB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HighLowGameMaster.Tests", "HighLowGameMaster.Tests\HighLowGameMaster.Tests.csproj", "{26FAC058-929E-41D2-A5EC-C1B6ADD2785D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighLowGameMaster", "HighLowGameMaster\HighLowGameMaster.csproj", "{1C5DCE7E-6BB8-45E6-834A-0CB8C724AF4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HighLowGameMaster", "HighLowGameMaster\HighLowGameMaster.csproj", "{1C5DCE7E-6BB8-45E6-834A-0CB8C724AF4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighLowGameMaster.Extensions.AspNetCore", "HighLowGameMaster.Extensions.AspNetCore\HighLowGameMaster.Extensions.AspNetCore.csproj", "{0923CE26-54C9-4D7B-A210-1159A63A90DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HighLowGameMaster.Extensions.AspNetCore", "HighLowGameMaster.Extensions.AspNetCore\HighLowGameMaster.Extensions.AspNetCore.csproj", "{0923CE26-54C9-4D7B-A210-1159A63A90DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomnessService", "RandomnessProvider\RandomnessService.csproj", "{D18C5FAA-1178-4031-AAB4-0B86504B3EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0923CE26-54C9-4D7B-A210-1159A63A90DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0923CE26-54C9-4D7B-A210-1159A63A90DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0923CE26-54C9-4D7B-A210-1159A63A90DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18C5FAA-1178-4031-AAB4-0B86504B3EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18C5FAA-1178-4031-AAB4-0B86504B3EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18C5FAA-1178-4031-AAB4-0B86504B3EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18C5FAA-1178-4031-AAB4-0B86504B3EAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{26FAC058-929E-41D2-A5EC-C1B6ADD2785D} = {1F6069BB-4990-4F12-B73F-6ECB2384853B}
 		{1C5DCE7E-6BB8-45E6-834A-0CB8C724AF4E} = {8ADD1971-566C-4158-B861-2FE967BB48F5}
 		{0923CE26-54C9-4D7B-A210-1159A63A90DB} = {8ADD1971-566C-4158-B861-2FE967BB48F5}
+		{D18C5FAA-1178-4031-AAB4-0B86504B3EAA} = {8ADD1971-566C-4158-B861-2FE967BB48F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67CB0C94-0A3E-497E-8BA6-AB820C7B36A5}

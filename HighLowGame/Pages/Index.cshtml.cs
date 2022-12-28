@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HighLowGame.Pages
 {
-    public class IndexModel : PageModel
+    public sealed class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
 

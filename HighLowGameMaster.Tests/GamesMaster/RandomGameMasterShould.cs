@@ -1,17 +1,19 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentResults;
+using RandomnessService;
+using RandomnessService.Providers;
 
-namespace HighLowGameMaster.Tests
+namespace HighLowGameMaster.Tests.GamesMaster
 {
-    [TestFixture]
-    public class GameMasterShould
+    public sealed class RandomGameMasterShould
     {
         GameMaster _gameMaster;
 
         [SetUp]
         public void Setup()
         {
-            _gameMaster = new GameMaster(10, 50);
+            var gameMasterFactory = new GameMasterFactory(new GameMasterSettings(minimumValue: 10, maximumValue: 50));
+            _gameMaster = gameMasterFactory.CreateGameMaster(GameMasterEngines.Random, new NeverRepeatRandomnessService(new PeanutButterProvider()));
         }
 
         [Test]
@@ -43,25 +45,14 @@ namespace HighLowGameMaster.Tests
         }
 
         [Test]
-        public void ShouldSayHigh_When_GuessIsBelowMysteryNumber()
+        public void ShouldSayHighOrLow_When_GuessIsWrong()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber - 1);
+            var result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber + 1);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(ResponseToGuess.High);
-        }
-
-        [Test]
-        public void ShouldSayLow_When_GuessIsAboveMysteryNumber()
-        {
-            // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber + 1);
-
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(ResponseToGuess.Low);
+            result.Value.Should().BeOneOf(ResponseToGuess.High, ResponseToGuess.Low);
         }
 
         [Test]

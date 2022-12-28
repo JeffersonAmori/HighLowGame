@@ -1,9 +1,10 @@
 ﻿using FluentResults;
 using HighLowGameMaster.Engines;
+using RandomnessService;
 
 namespace HighLowGameMaster
 {
-    public class GameMaster : IGameMaster
+    public sealed class GameMaster : IGameMaster
     {
         public IEngine GameEngine { get; private set; }
 
@@ -11,9 +12,9 @@ namespace HighLowGameMaster
         public int MaximumValue => GameEngine.GameState.MaximumValue;
         public int MysteryNumber => GameEngine.GameState.MysteryNumber;
 
-        public GameMaster(int minimumValue, int maximumValue)
+        public GameMaster(int minimumValue, int maximumValue, IRandomnessService randomnessService)
         {
-            GameEngine = new DefaultEngine(minimumValue, maximumValue);
+            GameEngine = new DefaultEngine(minimumValue, maximumValue, randomnessService);
             GameEngine.StartNewRound();
         }
 
