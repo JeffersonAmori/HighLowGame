@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace HighLowGameMaster
 {
-    public record GameState(int MinimumValue, int MaximumValue, int MisteryNumber);
+    public record GameState(int MinimumValue, int MaximumValue, int MysteryNumber);
 }

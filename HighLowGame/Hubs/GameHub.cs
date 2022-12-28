@@ -60,7 +60,7 @@ namespace HighLowGame.Hubs
         {
             await WriteToPage(_noUser, "Starting new round!");
             _gameMaster.StartNewRound();
-            await WriteToPage(_noUser, "New mistery number picked!");
+            await WriteToPage(_noUser, "New Mystery number picked!");
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)

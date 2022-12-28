@@ -9,7 +9,7 @@ namespace HighLowGameMaster
 
         public int MinimumValue => GameEngine.GameState.MinimumValue;
         public int MaximumValue => GameEngine.GameState.MaximumValue;
-        public int MisteryNumber => GameEngine.GameState.MisteryNumber;
+        public int MysteryNumber => GameEngine.GameState.MysteryNumber;
 
         public GameMaster(int minimumValue, int maximumValue)
         {

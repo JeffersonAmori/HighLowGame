@@ -38,15 +38,15 @@ namespace HighLowGameMaster.Tests
         public void ShouldPickNumberBetweenMinimumAndMaximum()
         {
             // Assert
-            _gameMaster.MisteryNumber.Should().BeGreaterThanOrEqualTo(_gameMaster.MinimumValue);
-            _gameMaster.MisteryNumber.Should().BeLessThanOrEqualTo(_gameMaster.MaximumValue);
+            _gameMaster.MysteryNumber.Should().BeGreaterThanOrEqualTo(_gameMaster.MinimumValue);
+            _gameMaster.MysteryNumber.Should().BeLessThanOrEqualTo(_gameMaster.MaximumValue);
         }
 
         [Test]
         public void ShouldSayHigh_When_GuessIsBelowMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MisteryNumber - 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber - 1);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -57,7 +57,7 @@ namespace HighLowGameMaster.Tests
         public void ShouldSayLow_When_GuessIsAboveMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MisteryNumber + 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber + 1);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -68,7 +68,7 @@ namespace HighLowGameMaster.Tests
         public void ShouldSayCorrect_When_GuessEqualsMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MisteryNumber);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -79,13 +79,13 @@ namespace HighLowGameMaster.Tests
         public void ShouldPickNewMysteryNumber_When_StartingNewRound()
         {
             // Set up
-            int oldMisteryNumber = _gameMaster.MisteryNumber;
+            int oldMysteryNumber = _gameMaster.MysteryNumber;
 
             // Act
             _gameMaster.StartNewRound();
 
             // Assert
-            _gameMaster.MisteryNumber.Should().NotBe(oldMisteryNumber);
+            _gameMaster.MysteryNumber.Should().NotBe(oldMysteryNumber);
         }
     }
 }

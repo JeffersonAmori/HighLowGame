@@ -22,8 +22,8 @@ namespace HighLowGameMaster.Engines
 
         public void StartNewRound()
         {
-            var misteryNumber = PickRandomNumberBetween(_minValue, _maxValue);
-            GameState = new GameState(_minValue, _maxValue, misteryNumber);
+            var MysteryNumber = PickRandomNumberBetween(_minValue, _maxValue);
+            GameState = new GameState(_minValue, _maxValue, MysteryNumber);
         }
 
         public Result<ResponseToGuess> ValidateGuess(int guess)
@@ -31,13 +31,13 @@ namespace HighLowGameMaster.Engines
             if (guess < GameState.MinimumValue) return Result.Fail($"Guess {guess} is below minimum: {GameState.MinimumValue}");
             if (guess > GameState.MaximumValue) return Result.Fail($"Guess {guess} is above maximum: {GameState.MaximumValue}");
 
-            if (guess < GameState.MisteryNumber)
+            if (guess < GameState.MysteryNumber)
                 return ResponseToGuess.Low;
 
-            if (guess > GameState.MisteryNumber)
+            if (guess > GameState.MysteryNumber)
                 return ResponseToGuess.High;
 
-            if (guess == GameState.MisteryNumber)
+            if (guess == GameState.MysteryNumber)
                 return ResponseToGuess.Correct;
 
             return ResponseToGuess.Unknown;

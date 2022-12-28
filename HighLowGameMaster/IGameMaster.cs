@@ -7,7 +7,7 @@ namespace HighLowGameMaster
     {
         int MaximumValue { get; }
         int MinimumValue { get; }
-        int MisteryNumber { get; }
+        int MysteryNumber { get; }
 
         void SetEngine(IEngine engine);
         void StartNewRound();
