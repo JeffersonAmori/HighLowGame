@@ -30,18 +30,18 @@ namespace HighLowGame.Hubs
             if (!int.TryParse(guess, out int guessedNumber))
             {
                 var errorMessage = $"Your guess {guess} should be a number (ex: 10).";
-                await WriteToPage(user, errorMessage);
+                await WriteToPageAsync(user, errorMessage);
                 return;
             }
 
-            await WriteToPage(user, $"{user} guesses {guess}.");
+            await WriteToPageAsync(user, $"{user} guesses {guess}.");
             var responseToGuess = _gameMaster.ValidateGuess(guessedNumber);
-            await WriteToPage(_noUser, MessageFrom(responseToGuess));
+            await WriteToPageAsync(_noUser, MessageFrom(responseToGuess));
 
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
-                await Celebrate(user);
-                await StartNewRound();
+                await CelebrateAsync(user);
+                await StartNewRoundAsync();
             }
         }
 
@@ -53,16 +53,16 @@ namespace HighLowGame.Hubs
             var newSelectedEngine = newEngine.ToEnum<GameMasterEngines>();
             _gameMaster = _gameMasterFactory.CreateGameMaster(newSelectedEngine, _randomnessService);
 
-            await WriteToPage(user, $"The new engine {newEngine} has been selected by {user}.");
-            await UpdateEngine(newEngine);
-            await StartNewRound();
+            await WriteToPageAsync(user, $"The new engine {newEngine} has been selected by {user}.");
+            await UpdateEngineAsync(newEngine);
+            await StartNewRoundAsync();
         }
 
-        private async Task StartNewRound()
+        private async Task StartNewRoundAsync()
         {
-            await WriteToPage(_noUser, "Starting new round!");
+            await WriteToPageAsync(_noUser, $"Starting new round! (Min: {_gameMaster.MinimumValue} - Max: {_gameMaster.MaximumValue}");
             _gameMaster.StartNewRound();
-            await WriteToPage(_noUser, "New Mystery number picked!");
+            await WriteToPageAsync(_noUser, "New Mystery number picked!");
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)
@@ -81,19 +81,19 @@ namespace HighLowGame.Hubs
             };
         }
 
-        private async Task WriteToPage(string user, string message)
+        private async Task WriteToPageAsync(string user, string message)
         {
-            await Clients.All.SendAsync("WriteToPage", user, message);
+            await Clients.All.SendAsync("WriteToPageAsync", user, message);
         }
 
-        private async Task Celebrate(string user)
+        private async Task CelebrateAsync(string user)
         {
-            await Clients.All.SendAsync("Celebrate", user);
+            await Clients.All.SendAsync("CelebrateAsync", user);
         }
 
-        private async Task UpdateEngine(string newEngine)
+        private async Task UpdateEngineAsync(string newEngine)
         {
-            await Clients.All.SendAsync("UpdateEngine", newEngine);
+            await Clients.All.SendAsync("UpdateEngineAsync", newEngine);
         }
     }
 }

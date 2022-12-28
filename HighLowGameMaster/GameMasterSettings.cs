@@ -6,6 +6,8 @@
         public int MinimumValue { get; set; }
         public int MaximumValue { get; set; }
 
+        public GameMasterSettings() { }
+
         public GameMasterSettings(int minimumValue, int maximumValue)
         {
             MinimumValue = minimumValue;
