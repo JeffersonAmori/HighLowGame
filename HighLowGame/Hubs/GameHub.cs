@@ -83,17 +83,17 @@ namespace HighLowGame.Hubs
 
         private async Task WriteToPageAsync(string user, string message)
         {
-            await Clients.All.SendAsync("WriteToPageAsync", user, message);
+            await Clients.All.SendAsync("WriteToPage", user, message);
         }
 
         private async Task CelebrateAsync(string user)
         {
-            await Clients.All.SendAsync("CelebrateAsync", user);
+            await Clients.All.SendAsync("Celebrate", user);
         }
 
         private async Task UpdateEngineAsync(string newEngine)
         {
-            await Clients.All.SendAsync("UpdateEngineAsync", newEngine);
+            await Clients.All.SendAsync("UpdateEngine", newEngine);
         }
     }
 }
