@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="FluentResults" Version="3.15.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HighLowGameMaster.Extensions.AspNetCore\HighLowGameMaster.Extensions.AspNetCore.csproj" />
     <ProjectReference Include="..\HighLowGameMaster\HighLowGameMaster.csproj" />
+    <ProjectReference Include="..\LoggerAdapter\LoggerAdapter.csproj" />
     <ProjectReference Include="..\RandomnessProvider\RandomnessService.csproj" />
   </ItemGroup>
 

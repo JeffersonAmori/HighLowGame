@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using HighLowGame.Extensions;
 using HighLowGameMaster;
+using LoggerAdapter;
 using Microsoft.AspNetCore.SignalR;
 using RandomnessService;
 
@@ -9,34 +10,43 @@ namespace HighLowGame.Hubs
     public sealed class GameHub : Hub
     {
         private static IGameMaster? _gameMaster;
-        private static readonly string _noUser;
+        private static readonly string GameMasterUser;
         private readonly GameMasterFactory _gameMasterFactory;
         private readonly IRandomnessService _randomnessService;
+        private readonly ILoggerAdapter<GameHub> _logger;
 
         static GameHub()
         {
-            _noUser = Guid.NewGuid().ToString();
+            GameMasterUser = "Hi-Lo-GameMaster-User-62554875";
         }
 
-        public GameHub(GameMasterFactory gameMasterFactory, IRandomnessService randomnessService)
+        public GameHub(GameMasterFactory gameMasterFactory, IRandomnessService randomnessService, ILoggerAdapter<GameHub> logger)
         {
             _gameMasterFactory = gameMasterFactory;
             _randomnessService = randomnessService;
-            _gameMaster ??= _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, randomnessService);
+            _logger = logger;
+
+            if (_gameMaster is null)
+            {
+                _gameMaster = _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, randomnessService);
+                StartNewRound();
+            }
         }
 
         public async Task Guess(string user, string guess)
         {
+            _logger.LogInformation("{user} guessed {guess}", user, guess);
             if (!int.TryParse(guess, out int guessedNumber))
             {
                 var errorMessage = $"Your guess {guess} should be a number (ex: 10).";
+                _logger.LogError(errorMessage);
                 await WriteToPageAsync(user, errorMessage);
                 return;
             }
 
             await WriteToPageAsync(user, $"{user} guesses {guess}.");
             var responseToGuess = _gameMaster.ValidateGuess(guessedNumber);
-            await WriteToPageAsync(_noUser, MessageFrom(responseToGuess));
+            await WriteToPageAsync(GameMasterUser, MessageFrom(responseToGuess));
 
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
@@ -60,9 +70,15 @@ namespace HighLowGame.Hubs
 
         private async Task StartNewRoundAsync()
         {
-            await WriteToPageAsync(_noUser, $"Starting new round! (Min: {_gameMaster.MinimumValue} - Max: {_gameMaster.MaximumValue}");
+            await WriteToPageAsync(GameMasterUser, $"Starting new round! (Min: {_gameMaster.MinimumValue} - Max: {_gameMaster.MaximumValue}");
+            StartNewRound();
+            await WriteToPageAsync(GameMasterUser, "New Mystery number picked!");
+        }
+
+        private void StartNewRound()
+        {
             _gameMaster.StartNewRound();
-            await WriteToPageAsync(_noUser, "New Mystery number picked!");
+            _logger.LogInformation("New round started. Mystery number: {MysteryNumber}.", _gameMaster.MysteryNumber);
         }
 
         private static string MessageFrom(Result<ResponseToGuess> responseToGuess)
@@ -83,16 +99,19 @@ namespace HighLowGame.Hubs
 
         private async Task WriteToPageAsync(string user, string message)
         {
+            _logger.LogInformation("Writing message {message} from {user}", message, user);
             await Clients.All.SendAsync("WriteToPage", user, message);
         }
 
         private async Task CelebrateAsync(string user)
         {
+            _logger.LogInformation("Celebrating user {user}", user);
             await Clients.All.SendAsync("Celebrate", user);
         }
 
         private async Task UpdateEngineAsync(string newEngine)
         {
+            _logger.LogInformation("Updating engine to {newEngine}", newEngine);
             await Clients.All.SendAsync("UpdateEngine", newEngine);
         }
     }

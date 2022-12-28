@@ -1,12 +1,18 @@
 ﻿.userMessage {
     text-align: left;
-    color: yellowgreen;
+    color: green;
     margin-bottom: 0;
 }
 
 .gameMessage {
     text-align: right;
-    color: lightcoral;
+    color: grey;
+    margin-bottom: 0;
+}
+
+.otherUserMessage {
+    text-align: right;
+    color: red;
     margin-bottom: 0;
 }
 

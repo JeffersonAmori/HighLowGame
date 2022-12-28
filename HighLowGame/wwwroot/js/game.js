@@ -1,6 +1,7 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
+var gameMasterUser = "Hi-Lo-GameMaster-User-62554875";
 
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
@@ -10,11 +11,16 @@ connection.on("WriteToPage", function (user, message) {
 
     var p = document.createElement("p");
 
-    if (user === currentUser) {
-        p.className = "userMessage";
-    }
-    else {
-        p.className = "gameMessage";
+    switch (user) {
+        case currentUser:
+            p.className = "userMessage";
+            break;
+        case gameMasterUser:
+            p.className = "gameMessage";
+            break;
+        default:
+            p.className = "otherUserMessage";
+            break;
     }
 
     var messageList = document.getElementById("messagesList");
