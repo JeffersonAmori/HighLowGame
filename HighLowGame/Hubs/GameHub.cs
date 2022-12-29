@@ -33,6 +33,18 @@ namespace HighLowGame.Hubs
             }
         }
 
+        public async Task NewPlayerConnected(string user)
+        {
+            _logger.LogInformation("New player connected: {user}", user);
+            await WriteToPageAsync(GameMasterUser, $"{user} just connected.");
+        }
+
+        public async Task PlayerDisconnected(string user)
+        {
+            _logger.LogInformation("Player disconnected: {user}", user);
+            await WriteToPageAsync(GameMasterUser, $"{user} disconnected.");
+        }
+
         public async Task Guess(string user, string guess)
         {
             _logger.LogInformation("{user} guessed {guess}", user, guess);

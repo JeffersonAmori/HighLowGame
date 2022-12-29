@@ -46,19 +46,45 @@ connection.on("UpdateEngine", function (newEngine) {
 });
 
 connection.start().then(function () {
+    var user = document.getElementById("userInput").value;
+    connection.invoke("NewPlayerConnected", user).catch(function (err) {
+        return console.error(err.toString());
+    });
     document.getElementById("sendButton").disabled = false;
 
 }).catch(function (err) {
     return console.error(err.toString());
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
+function celebrate() {
+    party.confetti(document.getElementsByTagName("Body")[0], {
+        count: party.variation.range(50, 60),
+        spread: party.variation.range(45, 55),
+        size: party.variation.range(1.3, 1.45)
+    });
+}
+
+function handleSubmit() {
     var user = document.getElementById("userInput").value;
-    var message = document.getElementById("messageInput").value;
+    const messageBox = document.getElementById("messageInput");
+    var message = messageBox.value;
     connection.invoke("Guess", user, message).catch(function (err) {
         return console.error(err.toString());
     });
+    messageBox.value = "";
+    messageBox.focus();
+}
+
+document.getElementById("sendButton").addEventListener("click", function (event) {
+    handleSubmit();
     event.preventDefault();
+});
+
+document.getElementById("messageInput").addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+        handleSubmit();
+        event.preventDefault();
+    }
 });
 
 function onEnginesListChange() {
@@ -69,10 +95,9 @@ function onEnginesListChange() {
     });
 }
 
-function celebrate() {
-    party.confetti(document.getElementsByTagName("Body")[0], {
-        count: party.variation.range(50, 60),
-        spread: party.variation.range(45, 55),
-        size: party.variation.range(1.3, 1.45)
+window.addEventListener("unload", function (e) {
+    var user = document.getElementById("userInput").value;
+    connection.invoke("PlayerDisconnected", user).catch(function (err) {
+        return console.error(err.toString());
     });
-}
+});
