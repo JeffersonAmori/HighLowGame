@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using LoggerAdapter;
 using Microsoft.Extensions.Logging;
 using Moq;
 
