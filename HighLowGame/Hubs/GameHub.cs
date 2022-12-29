@@ -82,7 +82,7 @@ namespace HighLowGame.Hubs
 
         private async Task StartNewRoundAsync()
         {
-            await WriteToPageAsync(GameMasterUser, $"Starting new round! (Min: {_gameMaster.MinimumValue} - Max: {_gameMaster.MaximumValue}");
+            await WriteToPageAsync(GameMasterUser, $"Starting new round! (Min: {_gameMaster.MinimumValue} - Max: {_gameMaster.MaximumValue})");
             StartNewRound();
             await WriteToPageAsync(GameMasterUser, "New Mystery number picked!");
         }
