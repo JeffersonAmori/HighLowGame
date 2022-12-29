@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using HighLowGame.Extensions;
 using HighLowGameMaster;
 using LoggerAdapter;
 using Microsoft.AspNetCore.SignalR;
@@ -33,18 +32,34 @@ namespace HighLowGame.Hubs
             }
         }
 
+        /// <summary>
+        /// Called from the client when a new player connects.
+        /// </summary>
+        /// <param name="user">Player's name</param>
+        /// <returns></returns>
         public async Task NewPlayerConnected(string user)
         {
             _logger.LogInformation("New player connected: {user}", user);
-            await WriteToPageAsync(GameMasterUser, $"{user} just connected.");
+            await WriteToPageAsync(GameMasterUser, $"Welcome {user}! Guess a number between {_gameMaster.MinimumValue} and {_gameMaster.MaximumValue}.");
         }
 
+        /// <summary>
+        /// Called from the client when a player disconnects.
+        /// </summary>
+        /// <param name="user">Player's name</param>
+        /// <returns></returns>
         public async Task PlayerDisconnected(string user)
         {
             _logger.LogInformation("Player disconnected: {user}", user);
             await WriteToPageAsync(GameMasterUser, $"{user} disconnected.");
         }
 
+        /// <summary>
+        /// Called from the client when a player guesses the Mystery Number.
+        /// </summary>
+        /// <param name="user">Player's name</param>
+        /// <param name="guess">Player's guess</param>
+        /// <returns></returns>
         public async Task Guess(string user, string guess)
         {
             _logger.LogInformation("{user} guessed {guess}", user, guess);
@@ -67,6 +82,12 @@ namespace HighLowGame.Hubs
             }
         }
 
+        /// <summary>
+        /// Called from the client when a changes the Game Engine.
+        /// </summary>
+        /// <param name="user">Player's name</param>
+        /// <param name="newEngine">New Engine</param>
+        /// <returns></returns>
         public async Task EngineChanged(string user, string newEngine)
         {
             if (string.IsNullOrEmpty(user))

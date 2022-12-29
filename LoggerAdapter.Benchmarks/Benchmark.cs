@@ -5,7 +5,7 @@ using Moq;
 namespace LoggerAdapter.Benchmarks;
 
 [MemoryDiagnoser]
-public class Benchmark
+public sealed class Benchmark
 {
     [Params(100, 1000, 10000)]
     public int Count;

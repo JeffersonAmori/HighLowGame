@@ -3,12 +3,26 @@ using RandomnessService;
 
 namespace HighLowGameMaster.Engines
 {
+    /// <summary>
+    /// Wrong Engine - always tells the wrong answer.
+    /// </summary>
     public sealed class WrongEngine : Engine
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="minimumValue">Minimum value</param>
+        /// <param name="maximumValue">Maximum value</param>
+        /// <param name="randomnessService">Randomness provider</param>
         public WrongEngine(int minimumValue, int maximumValue, IRandomnessService randomnessService)
             : base(minimumValue, maximumValue, randomnessService)
         { }
-
+        
+        /// <summary>
+        /// Validate the player's guess.
+        /// </summary>
+        /// <param name="guess">Player's guess</param>
+        /// <returns>The response to the guess.</returns>
         public override Result<ResponseToGuess> ValidateGuess(int guess)
         {
             if (guess < GameState.MinimumValue) return Result.Fail($"Guess {guess} is below minimum: {GameState.MinimumValue}");
@@ -34,7 +48,7 @@ namespace HighLowGameMaster.Engines
         /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
         protected override int PickRandomNumberBetween(int minValue, int maxValue)
         {
-            return RandomnessService.Next(minValue, maxValue + 1);
+            return RandomnessService.Next(minValue, maxValue);
         }
     }
 }

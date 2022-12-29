@@ -4,14 +4,27 @@ using RandomnessService;
 
 namespace HighLowGameMaster
 {
+    /// <summary>
+    /// The factory for the <see cref="GameMaster"/> class.
+    /// </summary>
     public sealed class GameMasterFactory
     {
         private readonly int _minimumValue;
         private readonly int _maximumValue;
 
+        /// <summary>
+        /// The constructor that takes <see cref="IOptions{TOptions}"/> from the DI container.
+        /// </summary>
+        /// <param name="gameMasterSettingsOptions">The Options from the DI container.</param>
         public GameMasterFactory(IOptions<GameMasterSettings> gameMasterSettingsOptions) : this(gameMasterSettingsOptions.Value)
         { }
 
+        /// <summary>
+        /// The constructor that takes <see cref="GameMasterSettings"/>.
+        /// </summary>
+        /// <param name="gameMasterSettings">The setting for the Game Master</param>
+        /// <exception cref="ArgumentNullException">The <see cref="GameMasterSettings"/> cannot be null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The minimum should be greater than zero and the maximum should be greater than the minimum.</exception>
         public GameMasterFactory(GameMasterSettings gameMasterSettings)
         {
             if (gameMasterSettings == null) throw new ArgumentNullException(nameof(gameMasterSettings));
@@ -28,6 +41,13 @@ namespace HighLowGameMaster
             _maximumValue = gameMasterSettings.MaximumValue;
         }
 
+        /// <summary>
+        /// Create a new Game Master.
+        /// </summary>
+        /// <param name="gameMasterEngine">The Game Master's <see cref="IEngine"/>.</param>
+        /// <param name="randomnessService">The Games Master's <see cref="IRandomnessService"/>.</param>
+        /// <returns>A new <see cref="GameMaster"/></returns>
+        /// <exception cref="ArgumentException">Throws when <see cref="GameMasterEngines"/> doesn't have a valid value.</exception>
         public GameMaster CreateGameMaster(GameMasterEngines gameMasterEngine, IRandomnessService randomnessService)
         {
             return gameMasterEngine switch

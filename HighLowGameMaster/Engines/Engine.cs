@@ -3,14 +3,26 @@ using RandomnessService;
 
 namespace HighLowGameMaster.Engines
 {
+    /// <summary>
+    /// The <see cref="GameMaster"/>'s Engine.
+    /// </summary>
     public abstract class Engine : IEngine
     {
         protected readonly int MinValue;
         protected readonly int MaxValue;
         protected readonly IRandomnessService RandomnessService;
 
+        /// <summary>
+        /// The game state.
+        /// </summary>
         public GameState GameState { get; protected set; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="minimumValue">Minimum value</param>
+        /// <param name="maximumValue">Maximum value</param>
+        /// <param name="randomnessService">Randomness provider</param>
         public Engine(int minimumValue, int maximumValue, IRandomnessService randomnessService)
         {
             MinValue = minimumValue;
@@ -20,12 +32,20 @@ namespace HighLowGameMaster.Engines
             StartNewRound();
         }
 
+        /// <summary>
+        /// Start a new round.
+        /// </summary>
         public void StartNewRound()
         {
             var mysteryNumber = PickRandomNumberBetween(MinValue, MaxValue);
             GameState = new GameState(MinValue, MaxValue, mysteryNumber);
         }
-
+        
+        /// <summary>
+        /// Validate the player's guess.
+        /// </summary>
+        /// <param name="guess">Player's guess</param>
+        /// <returns>The response to the guess.</returns>
         public abstract Result<ResponseToGuess> ValidateGuess(int guess);
 
         /// <summary>
