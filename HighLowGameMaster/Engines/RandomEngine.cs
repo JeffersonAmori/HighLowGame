@@ -46,6 +46,6 @@ namespace HighLowGameMaster.Engines
         /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
         protected override int PickRandomNumberBetween(int minValue, int maxValue) => RandomnessService.Next(minValue, maxValue);
 
-        private T PickOneRandomlyFrom<T>(params T[] args) => args[RandomnessService.Next(0, args.Length)];
+        private T PickOneRandomlyFrom<T>(params T[] args) => args[RandomnessService.Next(0, args.Length - 1)];
     }
 }

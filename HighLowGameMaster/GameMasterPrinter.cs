@@ -8,7 +8,7 @@
                 .CurrentRoundState
                 .GetPlayerStatisticsMap()
                 .Select(pair =>
-                    $"{pair.Key} made {pair.Value.NumberOfGuesses} guesses this round ({string.Join(',', pair.Value.GetGuessHistory())}). ");
+                    $"{pair.Key} made {pair.Value.NumberOfGuesses} guesses ({string.Join(',', pair.Value.GetGuessHistory())}). ");
 
             var printableText =
 @$"On this round: 
