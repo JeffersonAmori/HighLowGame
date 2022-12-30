@@ -48,7 +48,7 @@ dotnet run -c Release -- --job short --runtimes net6.0 --filter Benchmark
 ```
 
 ## Tests
-There is 87% of code covereage.
+There is ~90% of code covereage.
 
 ## CI/CD
 Continuous Delivery is configured using GitHub Actions.
