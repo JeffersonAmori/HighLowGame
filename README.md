@@ -61,3 +61,7 @@ App is monitored using Application Insights
 
 ## Deviation from C# style guidelines
 The naming convention for private and private static differs from the Microsoft's C# style on purpose based on personal preference and industry standards.
+
+## Out of scope
+* Have a separate Hub project to support multiple clients.
+* Validate the input on the front-end as it is desirable to keep open the possibility of the user type commands as well as guesses.
