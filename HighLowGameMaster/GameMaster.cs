@@ -9,6 +9,23 @@ namespace HighLowGameMaster
     /// </summary>
     public sealed class GameMaster : IGameMaster
     {
+        private int _numberOfRounds = 0;
+
+        /// <summary>
+        /// The state of the current round.
+        /// </summary>
+        public GameState CurrentRoundState { get; }
+
+        /// <summary>
+        /// Indicates if it is the first round.
+        /// </summary>
+        public bool GameInProgress => NumberOfRounds > 0;
+
+        /// <summary>
+        /// How many rounds played (includes the current round).
+        /// </summary>
+        public int NumberOfRounds => _numberOfRounds;
+
         /// <summary>
         /// The Game Engine.
         /// </summary>
@@ -17,17 +34,17 @@ namespace HighLowGameMaster
         /// <summary>
         /// Minimum possible value.
         /// </summary>
-        public int MinimumValue => GameEngine.GameState.MinimumValue;
+        public int MinimumValue => GameEngine.EngineState.MinimumValue;
 
         /// <summary>
         /// Maximum possible value.
         /// </summary>
-        public int MaximumValue => GameEngine.GameState.MaximumValue;
+        public int MaximumValue => GameEngine.EngineState.MaximumValue;
 
         /// <summary>
         /// The Mystery Number picked.
         /// </summary>
-        public int MysteryNumber => GameEngine.GameState.MysteryNumber;
+        public int MysteryNumber => GameEngine.EngineState.MysteryNumber;
 
         /// <summary>
         /// Default constructor.
@@ -37,6 +54,7 @@ namespace HighLowGameMaster
         /// <param name="randomnessService">The randomness provider</param>
         public GameMaster(int minimumValue, int maximumValue, IRandomnessService randomnessService)
         {
+            CurrentRoundState = new GameState();
             GameEngine = new DefaultEngine(minimumValue, maximumValue, randomnessService);
             GameEngine.StartNewRound();
         }
@@ -47,6 +65,7 @@ namespace HighLowGameMaster
         /// <param name="engine">The Engine.</param>
         public GameMaster(IEngine engine)
         {
+            CurrentRoundState = new GameState();
             GameEngine = engine;
         }
 
@@ -55,8 +74,9 @@ namespace HighLowGameMaster
         /// </summary>
         /// <param name="guess">Player's guess</param>
         /// <returns>The response to the guess.</returns>
-        public Result<ResponseToGuess> ValidateGuess(int guess)
+        public Result<ResponseToGuess> ValidateGuess(string user, int guess)
         {
+            CurrentRoundState.RecordGuess(user, guess);
             return GameEngine.ValidateGuess(guess);
         }
 
@@ -65,7 +85,14 @@ namespace HighLowGameMaster
         /// </summary>
         public void StartNewRound()
         {
+            CurrentRoundState.ResetPlayerStatistics();
             GameEngine.StartNewRound();
+            IncrementNumberOfRoundsBy(1);
+        }
+
+        private void IncrementNumberOfRoundsBy(int amount)
+        {
+            Interlocked.Add(ref _numberOfRounds, amount);
         }
 
         /// <summary>

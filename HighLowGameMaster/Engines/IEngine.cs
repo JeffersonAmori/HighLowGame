@@ -10,7 +10,7 @@ namespace HighLowGameMaster.Engines
         /// <summary>
         /// The game state.
         /// </summary>
-        GameState GameState { get; }
+        EngineState EngineState { get; }
 
         /// <summary>
         /// Start a new round.

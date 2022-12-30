@@ -9,6 +9,11 @@ namespace HighLowGameMaster
     public interface IGameMaster
     {
         /// <summary>
+        /// The state of the current round.
+        /// </summary>
+        public GameState CurrentRoundState { get; }
+
+        /// <summary>
         /// The maximum value
         /// </summary>
         int MaximumValue { get; }
@@ -37,8 +42,9 @@ namespace HighLowGameMaster
         /// <summary>
         /// Validate the player's guess.
         /// </summary>
+        /// <param name="user">Player's name</param>
         /// <param name="guess">Player's guess</param>
         /// <returns>The response to the guess.</returns>
-        Result<ResponseToGuess> ValidateGuess(int guess);
+        Result<ResponseToGuess> ValidateGuess(string user, int guess);
     }
 }

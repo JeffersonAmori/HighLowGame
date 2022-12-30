@@ -8,7 +8,8 @@ namespace HighLowGameMaster.Tests.GamesMaster
     [TestFixture]
     public sealed class DefaultGameMasterShould
     {
-        GameMaster _gameMaster;
+        private GameMaster? _gameMaster;
+        private const string RandomUser = nameof(RandomUser);
 
         [SetUp]
         public void Setup()
@@ -21,7 +22,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         public void NotAcceptNumberBelowMinimum()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MinimumValue - 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(RandomUser, _gameMaster.MinimumValue - 1);
 
             // Assert
             result.IsFailed.Should().BeTrue();
@@ -31,7 +32,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         public void NotAcceptNumberAboveMaximum()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MaximumValue + 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(RandomUser, _gameMaster.MaximumValue + 1);
 
             // Assert
             result.IsFailed.Should().BeTrue();
@@ -49,7 +50,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         public void ShouldSayHigh_When_GuessIsBelowMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber - 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(RandomUser, _gameMaster.MysteryNumber - 1);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -60,7 +61,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         public void ShouldSayLow_When_GuessIsAboveMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber + 1);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(RandomUser, _gameMaster.MysteryNumber + 1);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -71,7 +72,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         public void ShouldSayCorrect_When_GuessEqualsMysteryNumber()
         {
             // Act
-            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(_gameMaster.MysteryNumber);
+            Result<ResponseToGuess> result = _gameMaster.ValidateGuess(RandomUser, _gameMaster.MysteryNumber);
 
             // Assert
             result.IsSuccess.Should().BeTrue();

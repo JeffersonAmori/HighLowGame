@@ -21,15 +21,14 @@ namespace HighLowGame.Hubs
 
         public GameHub(GameMasterFactory gameMasterFactory, IRandomnessService randomnessService, ILoggerAdapter<GameHub> logger)
         {
-            _gameMasterFactory = gameMasterFactory;
             _randomnessService = randomnessService;
+            _gameMasterFactory = gameMasterFactory;
             _logger = logger;
 
-            if (_gameMaster is null)
-            {
-                _gameMaster = _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, randomnessService);
-                StartNewRound();
-            }
+            if (_gameMaster is not null) return;
+
+            _gameMaster = _gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, randomnessService);
+            StartNewRound();
         }
 
         /// <summary>
@@ -72,14 +71,20 @@ namespace HighLowGame.Hubs
             }
 
             await WriteToPageAsync(user, $"{user} guesses {guess}.");
-            var responseToGuess = _gameMaster.ValidateGuess(guessedNumber);
+            var responseToGuess = _gameMaster.ValidateGuess(user, guessedNumber);
             await WriteToPageAsync(GameMasterUser, MessageFrom(responseToGuess));
 
             if (responseToGuess.Value == ResponseToGuess.Correct)
             {
                 await CelebrateAsync(user);
+                await PrintStatisticsAsync();
                 await StartNewRoundAsync();
             }
+        }
+
+        private async Task PrintStatisticsAsync()
+        {
+            await WriteToPageAsync(GameMasterUser, _gameMaster.PrintStatistics());
         }
 
         /// <summary>

@@ -26,13 +26,13 @@ namespace HighLowGameMaster.Engines
         /// <returns>The response to the guess.</returns>
         public override Result<ResponseToGuess> ValidateGuess(int guess)
         {
-            if (guess < GameState.MinimumValue) return Result.Fail($"Guess {guess} is below minimum: {GameState.MinimumValue}");
-            if (guess > GameState.MaximumValue) return Result.Fail($"Guess {guess} is above maximum: {GameState.MaximumValue}");
+            if (guess < EngineState.MinimumValue) return Result.Fail($"Guess {guess} is below minimum: {EngineState.MinimumValue}");
+            if (guess > EngineState.MaximumValue) return Result.Fail($"Guess {guess} is above maximum: {EngineState.MaximumValue}");
 
-            if (guess < GameState.MysteryNumber || guess > GameState.MysteryNumber)
+            if (guess < EngineState.MysteryNumber || guess > EngineState.MysteryNumber)
                 return PickOneRandomlyFrom(ResponseToGuess.Low, ResponseToGuess.High);
 
-            if (guess == GameState.MysteryNumber)
+            if (guess == EngineState.MysteryNumber)
                 return ResponseToGuess.Correct;
 
             return ResponseToGuess.Unknown;

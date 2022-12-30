@@ -15,7 +15,7 @@ namespace HighLowGameMaster.Engines
         /// <summary>
         /// The game state.
         /// </summary>
-        public GameState GameState { get; protected set; }
+        public EngineState EngineState { get; protected set; }
 
         /// <summary>
         /// Default constructor.
@@ -38,7 +38,7 @@ namespace HighLowGameMaster.Engines
         public void StartNewRound()
         {
             var mysteryNumber = PickRandomNumberBetween(MinValue, MaxValue);
-            GameState = new GameState(MinValue, MaxValue, mysteryNumber);
+            EngineState = new EngineState(MinValue, MaxValue, mysteryNumber);
         }
         
         /// <summary>
