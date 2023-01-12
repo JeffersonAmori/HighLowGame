@@ -13,7 +13,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         [SetUp]
         public void Setup()
         {
-            var gameMasterFactory = new GameMasterFactory(new GameMasterSettings(minimumValue: 10, maximumValue: 50));
+            var gameMasterFactory = new GameMasterFactory(new GameMasterSettings(minimumValue: 10, maximumValue: 50, shouldExcludeBoundaries: true));
             _gameMaster = gameMasterFactory.CreateGameMaster(GameMasterEngines.Random, new NeverRepeatRandomnessService(new PeanutButterProvider()));
         }
 

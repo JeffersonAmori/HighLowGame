@@ -19,6 +19,11 @@
         public int MaximumValue { get; set; }
 
         /// <summary>
+        /// Defines if Mystery Number can be equals the Minimum or Maximum value.
+        /// </summary>
+        public bool ShouldExcludeBoundaries { get; set; } = false;
+
+        /// <summary>
         /// Default constructor.
         /// </summary>
         public GameMasterSettings() { }
@@ -28,10 +33,12 @@
         /// </summary>
         /// <param name="minimumValue">The minimum value</param>
         /// <param name="maximumValue">The maximum value</param>
-        public GameMasterSettings(int minimumValue, int maximumValue)
+        /// <param name="shouldExcludeBoundaries">Defines if Mystery Number can be equals the Minimum or Maximum value.</param>
+        public GameMasterSettings(int minimumValue, int maximumValue, bool shouldExcludeBoundaries = false)
         {
             MinimumValue = minimumValue;
             MaximumValue = maximumValue;
+            ShouldExcludeBoundaries = shouldExcludeBoundaries;
         }
     }
 }

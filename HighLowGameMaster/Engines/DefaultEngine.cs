@@ -11,12 +11,8 @@ namespace HighLowGameMaster.Engines
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="minimumValue">Minimum value</param>
-        /// <param name="maximumValue">Maximum value</param>
-        /// <param name="randomnessService">Randomness provider</param>
-        public DefaultEngine(int minimumValue, int maximumValue, IRandomnessService randomnessService)
-            : base(minimumValue, maximumValue, randomnessService)
-        { }
+        /// <param name="engineOptions">The Engine Options.</param>
+        public DefaultEngine(EngineOptions engineOptions) : base(engineOptions) { }
 
         /// <summary>
         /// Validate the player's guess.
@@ -46,9 +42,10 @@ namespace HighLowGameMaster.Engines
         /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
         /// <param name="maxValue">The inclusive upper bound of the random number returned. maxValue must be greater than or equal to minValue.</param>
         /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
-        protected override int PickRandomNumberBetween(int minValue, int maxValue)
+        protected override int PickRandomNumberBetweenInternal(int minValue, int maxValue)
         {
-            return RandomnessService.Next(minValue, maxValue);
+            
+            return _engineOptions.RandomnessService.Next(minValue, maxValue);
         }
     }
 }

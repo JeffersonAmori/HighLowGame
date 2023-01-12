@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using RandomnessService;
 
 namespace HighLowGameMaster.Engines
 {
@@ -8,17 +7,12 @@ namespace HighLowGameMaster.Engines
     /// </summary>
     public sealed class RandomEngine : Engine
     {
-
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="minimumValue">Minimum value</param>
-        /// <param name="maximumValue">Maximum value</param>
-        /// <param name="randomnessService">Randomness provider</param>
-        public RandomEngine(int minimumValue, int maximumValue, IRandomnessService randomnessService)
-            : base(minimumValue, maximumValue, randomnessService)
-        { }
-        
+        /// <param name="engineOptions">The Engine Options.</param>public RandomEngine(EngineOptions engineOptions) : base(engineOptions) { }
+        public RandomEngine(EngineOptions engineOptions) : base(engineOptions) { }
+
         /// <summary>
         /// Validate the player's guess.
         /// </summary>
@@ -44,8 +38,8 @@ namespace HighLowGameMaster.Engines
         /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
         /// <param name="maxValue">The inclusive upper bound of the random number returned. maxValue must be greater than or equal to minValue.</param>
         /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
-        protected override int PickRandomNumberBetween(int minValue, int maxValue) => RandomnessService.Next(minValue, maxValue);
+        protected override int PickRandomNumberBetweenInternal(int minValue, int maxValue) => _engineOptions.RandomnessService.Next(minValue, maxValue);
 
-        private T PickOneRandomlyFrom<T>(params T[] args) => args[RandomnessService.Next(0, args.Length - 1)];
+        private T PickOneRandomlyFrom<T>(params T[] args) => args[_engineOptions.RandomnessService.Next(0, args.Length - 1)];
     }
 }

@@ -9,8 +9,7 @@ namespace HighLowGameMaster
     /// </summary>
     public sealed class GameMasterFactory
     {
-        private readonly int _minimumValue;
-        private readonly int _maximumValue;
+        private readonly GameMasterSettings _gameMasterSettings;
 
         /// <summary>
         /// The constructor that takes <see cref="IOptions{TOptions}"/> from the DI container.
@@ -37,8 +36,7 @@ namespace HighLowGameMaster
                 throw new ArgumentOutOfRangeException(
                     $"The {nameof(gameMasterSettings.MaximumValue)} must be less than or equal to the {nameof(gameMasterSettings.MinimumValue)}.");
 
-            _minimumValue = gameMasterSettings.MinimumValue;
-            _maximumValue = gameMasterSettings.MaximumValue;
+            _gameMasterSettings = gameMasterSettings;
         }
 
         /// <summary>
@@ -52,9 +50,9 @@ namespace HighLowGameMaster
         {
             return gameMasterEngine switch
             {
-                GameMasterEngines.Default => new GameMaster(new DefaultEngine(_minimumValue, _maximumValue, randomnessService)),
-                GameMasterEngines.Wrong => new GameMaster(new WrongEngine(_minimumValue, _maximumValue, randomnessService)),
-                GameMasterEngines.Random => new GameMaster(new RandomEngine(_minimumValue, _maximumValue, randomnessService)),
+                GameMasterEngines.Default => new GameMaster(new DefaultEngine(new EngineOptions(_gameMasterSettings.MinimumValue, _gameMasterSettings.MaximumValue, randomnessService, _gameMasterSettings.ShouldExcludeBoundaries))),
+                GameMasterEngines.Wrong => new GameMaster(new WrongEngine(new EngineOptions(_gameMasterSettings.MinimumValue, _gameMasterSettings.MaximumValue, randomnessService, _gameMasterSettings.ShouldExcludeBoundaries))),
+                GameMasterEngines.Random => new GameMaster(new RandomEngine(new EngineOptions(_gameMasterSettings.MinimumValue, _gameMasterSettings.MaximumValue, randomnessService, _gameMasterSettings.ShouldExcludeBoundaries))),
                 _ => throw new ArgumentException($"A Game Master cannot be created with the engine {gameMasterEngine}.", nameof(gameMasterEngine))
             };
         }

@@ -52,10 +52,11 @@ namespace HighLowGameMaster
         /// <param name="minimumValue">Minimum possible value</param>
         /// <param name="maximumValue">Maximum possible value</param>
         /// <param name="randomnessService">The randomness provider</param>
-        public GameMaster(int minimumValue, int maximumValue, IRandomnessService randomnessService)
+        /// <param name="shouldExcludeBoundaries">Defines if Mystery Number can be equals the Minimum or Maximum value. </param>
+        public GameMaster(int minimumValue, int maximumValue, IRandomnessService randomnessService, bool shouldExcludeBoundaries = false)
         {
             CurrentRoundState = new GameState();
-            GameEngine = new DefaultEngine(minimumValue, maximumValue, randomnessService);
+            GameEngine = new DefaultEngine(new EngineOptions(minimumValue, maximumValue, randomnessService, shouldExcludeBoundaries));
             GameEngine.StartNewRound();
         }
 
@@ -85,8 +86,8 @@ namespace HighLowGameMaster
         /// </summary>
         public void StartNewRound()
         {
-            CurrentRoundState.ResetPlayerStatistics();
             GameEngine.StartNewRound();
+            CurrentRoundState.ResetPlayerStatistics();
             IncrementNumberOfRoundsBy(1);
         }
 

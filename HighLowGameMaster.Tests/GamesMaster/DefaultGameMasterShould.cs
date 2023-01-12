@@ -2,6 +2,7 @@ using FluentAssertions;
 using FluentResults;
 using RandomnessService;
 using RandomnessService.Providers;
+#pragma warning disable CS8602
 
 namespace HighLowGameMaster.Tests.GamesMaster
 {
@@ -14,7 +15,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
         [SetUp]
         public void Setup()
         {
-            var gameMasterFactory = new GameMasterFactory(new GameMasterSettings(minimumValue: 10, maximumValue: 50));
+            var gameMasterFactory = new GameMasterFactory(new GameMasterSettings(minimumValue: 10, maximumValue: 50, shouldExcludeBoundaries: true));
             _gameMaster = gameMasterFactory.CreateGameMaster(GameMasterEngines.Default, new NeverRepeatRandomnessService(new PeanutButterProvider()));
         }
 
@@ -27,7 +28,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
             // Assert
             result.IsFailed.Should().BeTrue();
         }
-
+        
         [Test]
         public void NotAcceptNumberAboveMaximum()
         {

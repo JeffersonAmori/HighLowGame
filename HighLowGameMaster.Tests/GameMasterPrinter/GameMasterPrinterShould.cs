@@ -14,7 +14,7 @@ namespace HighLowGameMaster.Tests
         public void NotAcceptNumberBelowMinimum()
         {
             // Arrange
-            IGameMaster gameMaster = new GameMaster(new DefaultEngine(10, 30, Mock.Of<IRandomnessService>()));
+            IGameMaster gameMaster = new GameMaster(new DefaultEngine(new EngineOptions(10, 30, Mock.Of<IRandomnessService>())));
             List<string> users = new() { "Jon Doe", "Jane Doe", "Mark" };
             foreach (var user in users)
             {

@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using RandomnessService;
 
 namespace HighLowGameMaster.Engines
 {
@@ -8,9 +7,7 @@ namespace HighLowGameMaster.Engines
     /// </summary>
     public abstract class Engine : IEngine
     {
-        protected readonly int MinValue;
-        protected readonly int MaxValue;
-        protected readonly IRandomnessService RandomnessService;
+        protected readonly EngineOptions _engineOptions;
 
         /// <summary>
         /// The game state.
@@ -20,15 +17,10 @@ namespace HighLowGameMaster.Engines
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="minimumValue">Minimum value</param>
-        /// <param name="maximumValue">Maximum value</param>
-        /// <param name="randomnessService">Randomness provider</param>
-        public Engine(int minimumValue, int maximumValue, IRandomnessService randomnessService)
+        /// <param name="engineOptions">The Engine Options.</param>
+        public Engine(EngineOptions engineOptions)
         {
-            MinValue = minimumValue;
-            MaxValue = maximumValue;
-            RandomnessService = randomnessService;
-
+            _engineOptions = engineOptions;
             StartNewRound();
         }
 
@@ -37,10 +29,10 @@ namespace HighLowGameMaster.Engines
         /// </summary>
         public void StartNewRound()
         {
-            var mysteryNumber = PickRandomNumberBetween(MinValue, MaxValue);
-            EngineState = new EngineState(MinValue, MaxValue, mysteryNumber);
+            int newMysteryNumber = PickRandomNumberBetween(_engineOptions.MinimumValue, _engineOptions.MaximumValue);
+            EngineState = new EngineState(_engineOptions.MinimumValue, _engineOptions.MaximumValue, newMysteryNumber);
         }
-        
+
         /// <summary>
         /// Validate the player's guess.
         /// </summary>
@@ -54,6 +46,27 @@ namespace HighLowGameMaster.Engines
         /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
         /// <param name="maxValue">The inclusive upper bound of the random number returned. maxValue must be greater than or equal to minValue.</param>
         /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
-        protected abstract int PickRandomNumberBetween(int minValue, int maxValue);
+        protected virtual int PickRandomNumberBetween(int minValue, int maxValue)
+        {
+            int newMysteryNumber = default;
+
+            do
+                newMysteryNumber = PickRandomNumberBetweenInternal(minValue, maxValue);
+            while (DoesNotMeetCriteria(newMysteryNumber));
+
+            return newMysteryNumber;
+        }
+
+        /// <summary>
+        /// Returns a random integer that is within a specified range.
+        /// </summary>
+        /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
+        /// <param name="maxValue">The inclusive upper bound of the random number returned. maxValue must be greater than or equal to minValue.</param>
+        /// <returns>A 32-bit signed integer greater than or equal to minValue and less than or equal maxValue.</returns>
+        protected abstract int PickRandomNumberBetweenInternal(int minValue, int maxValue);
+
+        protected virtual bool DoesNotMeetCriteria(int newMysteryNumber) =>
+            _engineOptions.ShouldExcludeBoundaries &&
+            (_engineOptions.MinimumValue == newMysteryNumber || _engineOptions.MaximumValue == newMysteryNumber);
     }
 }
