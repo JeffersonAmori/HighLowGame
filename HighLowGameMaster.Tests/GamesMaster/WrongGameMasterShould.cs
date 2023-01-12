@@ -78,7 +78,7 @@ namespace HighLowGameMaster.Tests.GamesMaster
             result.Value.Should().Be(ResponseToGuess.Correct);
         }
 
-        [Test, Ignore("Figuring out.")]
+        [Test]
         public void ShouldPickNewMysteryNumber_When_StartingNewRound()
         {
             // Set up
