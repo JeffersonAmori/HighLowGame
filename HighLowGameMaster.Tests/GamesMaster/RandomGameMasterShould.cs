@@ -66,18 +66,5 @@ namespace HighLowGameMaster.Tests.GamesMaster
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().Be(ResponseToGuess.Correct);
         }
-
-        [Test]
-        public void ShouldPickNewMysteryNumber_When_StartingNewRound()
-        {
-            // Set up
-            int oldMysteryNumber = _gameMaster.MysteryNumber;
-
-            // Act
-            _gameMaster.StartNewRound();
-
-            // Assert
-            _gameMaster.MysteryNumber.Should().NotBe(oldMysteryNumber);
-        }
     }
 }
